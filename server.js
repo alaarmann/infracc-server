@@ -23,59 +23,68 @@ router.route('/resources')
 
     var resource = new Resource();
     console.log('Request body: ' + JSON.stringify(req.body));
-    resource.name = req.body.name;
-    console.log('Create resource ' + resource.name);
+    resource.key = req.body.key;
+    console.log('Create resource ' + resource.key);
     resource.save(function(err) {
-        if (err)
+        if (err){
             res.send(err);
+        } else {
+            res.json({ message: 'Resource created' });
+        }
 
-        res.json({ message: 'Resource created' });
     });
 
 })
     .get(function(req, res) {
         Resource.find(function(err, resources) {
-            if (err)
+            if (err){
                 res.send(err);
+            } else {
+                res.json(resources);
+            }
 
-            res.json(resources);
         });
     });
 
 router.route('/resources/:resource_id')
     .get(function(req, res) {
         Resource.findById(req.params.resource_id, function(err, resource) {
-            if (err)
+            if (err){
                 res.send(err);
-            res.json(resource);
+            } else {
+                res.json(resource);
+            }
         });
     })
     .put(function(req, res) {
 
         Resource.findById(req.params.resource_id, function(err, resource) {
 
-            if (err)
+            if (err){
                 res.send(err);
+            } else {
+                resource.key = req.body.key;
 
-            resource.name = req.body.name;
-
-            resource.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message: 'Resource updated!' });
-            });
-
+                resource.save(function (err) {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        res.json({message: 'Resource updated!'});
+                    }
+                });
+            }
         });
     })
     .delete(function(req, res) {
         Resource.remove({
             _id: req.params.resource_id
         }, function(err) {
-            if (err)
+            if (err){
                 res.send(err);
+            } else {
+                res.json({ message: 'Resource deleted successfully' });
+            }
 
-            res.json({ message: 'Resource deleted successfully' });
         });
     });
 
