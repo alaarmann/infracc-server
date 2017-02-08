@@ -16,11 +16,18 @@ var Resource     = require('./models/resource');
 
 var router = express.Router();
 
+var testLatency = 3000;
+
 router.get('/', function(req, res) {
     res.json({ message: 'Welcome!' });
 });
 
-router.route('/resources')
+router.route('/resources').all(function(req, res, next) {
+    setTimeout(function () {
+        next();
+    }, testLatency)
+
+})
 .post(function(req, res) {
 
     var resource = new Resource();
