@@ -36,7 +36,7 @@ router.route('/resources').all(function(req, res, next) {
     console.log('Create resource ' + resource.key);
     resource.save(function(err) {
         if (err){
-            console.log('Create resource ' + resource.key + 'has failed');
+            console.log('Create resource ' + resource.key + ' has failed');
 
             res.status(409).send(err);
         } else {
